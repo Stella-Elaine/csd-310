@@ -39,11 +39,14 @@ except mysql.connector.Error as err:
 
 cursor = db.cursor()
 
+
 cursor.execute("SELECT studio_id, studio_name FROM studio")
 query = cursor.fetchall()
 print("--  DISPLAYING Studio RECORDS --")
 for id in query:
     print(f"STUDIO ID: {id[0]} \nStudio Name: {id[1]}\n")
+
+
 
 cursor.execute("SELECT genre_id, genre_name FROM genre")
 query = cursor.fetchall()
@@ -51,14 +54,24 @@ print("-- DISPLAYING Genre RECORDS --")
 for id in query:
     print(f"GENRE ID: {id[0]} \nGenre Name: {id[1]}\n")
 
+
+
+
+
 cursor.execute("Select film_name, film_runtime FROM film WHERE film_runtime < 120")
 query=cursor.fetchall()
 print("-- DISPLAYING Short Film RECORDS --")
-
 for id in query:
-    print(f"Film Name: {id[0]} \nFilm Director: {id[1]}\n")
+    print(f"Film Name: {id[0]} \nFilm RunTime {id[1]}\n")
+
+
+
+
 cursor.execute("Select film_name, film_director FROM film")
+query=cursor.fetchall()
 print("-- DISPLAYING Short Film Directors --")
+for id in query:
+    print(f"Film Name: {id[0]} \nFilm Director {id[1]}\n")
 
 
 
