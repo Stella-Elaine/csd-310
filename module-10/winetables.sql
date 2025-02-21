@@ -43,7 +43,7 @@ CREATE TABLE roles (
 -- create the employees table and set the foreign key
 CREATE TABLE employee (
     employee_id   INT             NOT NULL        AUTO_INCREMENT,
-    film_name  VARCHAR(75)     NOT NULL,
+    role_id     INT             NOT NULL,
     employee_name    
 
 	
