@@ -55,10 +55,10 @@ CREATE TABLE employee (
 -- create the order table and set the foreign key
 CREATE TABLE orders (
     order_id   INT             NOT NULL        AUTO_INCREMENT,
-    product_id  INT     NOT NULL,        AUTO_INCREMENT,
-   tracking_id INT     NOT NULL,        AUTO_INCREMENT,
-    order_date DATE     NOT NULL,        AUTO_INCREMENT,
-    order_quantity INT     NOT NULL,        
+    product_id  INT     NOT NULL,
+    tracking_id INT     NOT NULL        AUTO_INCREMENT,
+    order_date DATE     NOT NULL,
+    order_quantity INT     NOT NULL,
 
 	
     
@@ -131,12 +131,56 @@ INSERT INTO employee(employee_name, role_id)
     VALUES ('Maria Costanza', (SELECT role_id FROM roles WHERE role_name = 'Distribution'));
 
 
+-- insert into suppliers
+INSERT INTO suppliers(supplier_name, supplier_product)
+    VALUES('Supplier_1', 'bottles, corks')
+
+INSERT INTO suppliers(supplier_name, supplier_product)
+    VALUES('Supplier_2', 'lables, boxes')
+
+INSERT INTO suppliers(supplier_id, supplier_product)
+    VALUES('Supplier_3', 'vats, tubing')
+
 -- insert into products
-INSERT INTO products(product_name, inventory)
-    VALUES('Merlot', 100);
-INSERT INTO products(product_name, inventory)
-    VALUES('Carbernet', 100);
-INSERT INTO products(product_name, inventory)
-    VALUES('Chablis', 100);
-INSERT INTO products(product_name, inventory)
-    VALUES('Chardonnay', 100);
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Merlot', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_1'));
+
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Carbernet', 100, (SELECT supplier_id FROM supplier_id WHERE supplier_name = 'Supplier_2'));
+
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Chablis', 100, (SELECT supplier_id FROM supplier_id WHERE supplier_name = 'Supplier_3')));
+
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Chardonnay', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_1'));
+
+-- insert into orders
+INSERT INTO orders(order_date, order_quantity, product_id)
+    VALUES('JAN 1, 2024', 20, (SELECT product_id FROM products WHERE product_name = 'Merlot'));
+
+INSERT INTO orders(order_date, order_quantity, product_id)
+    VALUES('JAN 2, 2024', 32, (SELECT product_id FROM products WHERE product_name = 'Cabernet'));
+
+INSERT INTO orders(order_date, order_quantity, product_id)
+    VALUES('JAN 3, 2024', 102, (SELECT product_id FROM products WHERE product_name = 'Chanblis'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
