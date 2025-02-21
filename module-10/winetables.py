@@ -70,6 +70,6 @@ query  = cursor.fetchall()
 print("--  DISPLAYING orders TABLE --")
 for order in query:
     print(f"ORDER ID: {order[0]}\nPRODUCT ID: {order[1]}\nTRACKING ID: {order[2]}\nORDER DATE: {order[3]}\nQUANTITY: {order[4]}")
-    
+
 
 
