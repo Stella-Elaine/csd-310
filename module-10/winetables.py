@@ -19,7 +19,7 @@ try:
     cursor = db.cursor()
 
     # owners table
-    cursor.execute("SELECT owner_id, owner_name, role_id FROM owners")
+    cursor.execute("SELECT owner_id, owner_name, role_id FROM owners;SELECT owner_id, owner_name, role_id FROM owners")
     owners  = cursor.fetchall()
     print("--  DISPLAYING Owners TABLE --")
     for owner in owners:
