@@ -6,11 +6,10 @@
 -- drop database user if exists 
 DROP USER IF EXISTS 'wine_user'@'localhost';
 
-
 CREATE USER 'wine_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'grapes';
 
-GRANT ALL PRIVILEGES ON wine.* TO 'wines_user'@'localhost';
-
+-- grant all privileges to the movies database to user movies_user on localhost 
+GRANT ALL PRIVILEGES ON wine.* TO 'wine_user'@'localhost';
 
 -- drop tables if they are present
 DROP TABLE IF EXISTS owners;
@@ -33,8 +32,7 @@ CREATE TABLE owners (
     owner_id     INT             NOT NULL AUTO_INCREMENT,
     owner_name  CHAR(50)    NOT NULL,
     role_id     INT             NOT NULL, 
-   
-     
+        
     PRIMARY KEY(owner_id)
 
     -- CONSTRAINT fk_role
@@ -42,14 +40,11 @@ CREATE TABLE owners (
     --     REFERENCES role(role_id)
 ); 
 
-
 -- create the employees table and set the foreign key
 CREATE TABLE employee (
     employee_id   INT             NOT NULL        AUTO_INCREMENT,
     role_id     INT             NOT NULL,
-    employee_name    VARCHAR(50) NOT NULL,
-
-	
+    employee_name    VARCHAR(50) NOT NULL,	
     
     PRIMARY KEY(employee_id)
     -- FOREIGN KEY(role_id)
@@ -59,39 +54,35 @@ CREATE TABLE employee (
 CREATE TABLE orders (
     order_id   INT             NOT NULL        AUTO_INCREMENT,
     product_id  INT     NOT NULL,
-    tracking_id INT     NOT NULL,
-    order_date VARCHAR     NOT NULL,
+    tracking_id VARCHAR(75)      NOT NULL,
+    order_date VARCHAR(75)   NOT NULL,
     order_quantity INT     NOT NULL,
 
-	
-    
     PRIMARY KEY(order_id)
     -- FOREIGN KEY(product_id)
     -- FOREIGN KEY(tracking_id)
     );
 
-    -- create the product table and set the foreign key
+-- create the product table and set the foreign key
 CREATE TABLE products (
     product_id  INT     NOT NULL        AUTO_INCREMENT,
     product_name  VARCHAR(75)     NOT NULL,
     inventory   INT     NOT NULL,
     supplier_id     INT     NOT NULL,
 	
-    
     PRIMARY KEY(product_id)
     );
 
-        -- create the suppliers table and set the foreign key
+-- create the suppliers table and set the foreign key
 CREATE TABLE suppliers (
     supplier_id INT NOT NULL AUTO_INCREMENT,
     supplier_name  VARCHAR(75)     NOT NULL,
-    supplier_product  VARCHAR(75)     NOT NULL,
-	
+    supplier_product1  VARCHAR(75)     NOT NULL,
+    supplier_product2  VARCHAR(75)     NOT NULL,
     
     PRIMARY KEY(supplier_id)
 );
     
-
 -- insert role records
 INSERT INTO user_roles(role_name)
     VALUES('Owner');    
@@ -99,18 +90,14 @@ INSERT INTO user_roles(role_name)
 INSERT INTO user_roles(role_name)
     VALUES('Fiance and Payroll'); 
 
- INSERT INTO user_roles(role_name)
+INSERT INTO user_roles(role_name)
     VALUES('Marketing'); 
 
- INSERT INTO user_roles(role_name)
+INSERT INTO user_roles(role_name)
    VALUES('Production'); 
 
 INSERT INTO user_roles(role_name)
   VALUES('Distribution'); 
-
- 
- 
-
 
 -- insert owner records
 INSERT INTO owners(owner_name, role_id)
@@ -135,57 +122,50 @@ INSERT INTO employee(employee_name, role_id)
 INSERT INTO employee(employee_name, role_id)
     VALUES ('Maria Costanza', (SELECT role_id FROM user_roles WHERE role_name = 'Distribution'));
 
-
 -- insert into suppliers
-INSERT INTO suppliers(supplier_name, supplier_product)
-    VALUES('Supplier_1', 'bottles, corks');
+INSERT INTO suppliers(supplier_name, supplier_product1, supplier_product2)
+    VALUES('Supplier_1', 'bottles', 'corks');
 
-INSERT INTO suppliers(supplier_name, supplier_product)
-    VALUES('Supplier_2', 'labels, boxes');
+INSERT INTO suppliers(supplier_name, supplier_product1, supplier_product2)
+    VALUES('Supplier_2', 'labels', 'boxes');
 
-INSERT INTO suppliers(supplier_name, supplier_product)
-    VALUES('Supplier_3', 'vats, tubing');
+INSERT INTO suppliers(supplier_name, supplier_product1, supplier_product2)
+    VALUES('Supplier_3', 'vats', 'tubing');
 
 -- insert into products
 INSERT INTO products(product_name, inventory, supplier_id)
     VALUES('Merlot', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_1'));
 
 INSERT INTO products(product_name, inventory, supplier_id)
-    VALUES('Carbernet', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_2'));
+    VALUES('Cabernet', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_2'));
 
-INSERT INTO products(product_name, inventory, supplier)
-    VALUES('Chablis', 100, (SELECT supplier_id FROM supplier_id WHERE supplier_name = 'Supplier_3'));
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Chablis', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_3'));
 
 INSERT INTO products(product_name, inventory, supplier_id)
     VALUES('Chardonnay', 100, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_1'));
 
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Pinot noir', 500, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_3'));
+
+INSERT INTO products(product_name, inventory, supplier_id)
+    VALUES('Riesling', 150, (SELECT supplier_id FROM suppliers WHERE supplier_name = 'Supplier_1'));
+
 -- insert into orders
-INSERT INTO orders(order_date, order_quantity, product_id)
-    VALUES('JAN 1 2024', 20, (SELECT product_id FROM products WHERE product_name = 'Merlot'));
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 1 2024', 20, '12345', (SELECT product_id FROM products WHERE product_name = 'Merlot'));
 
-INSERT INTO orders(order_date, order_quantity, product_id)
-    VALUES('JAN 2 2024', 32, (SELECT product_id FROM products WHERE product_name = 'Cabernet'));
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 2 2024', 32, '123456', (SELECT product_id FROM products WHERE product_name = 'Cabernet'));
 
-INSERT INTO orders(order_date, order_quantity, product_id)
-    VALUES('JAN 3 2024', 102, (SELECT product_id FROM products WHERE product_name = 'Chanblis'));
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 5 2024', 32, '1234567', (SELECT product_id FROM products WHERE product_name = 'Riesling'));
 
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 8 2024', 102, '2564789', (SELECT product_id FROM products WHERE product_name = 'Cabernet'));
 
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 8 2024', 32, '6547895', (SELECT product_id FROM products WHERE product_name = 'Riesling'));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+INSERT INTO orders(order_date, order_quantity, tracking_id, product_id)
+    VALUES('JAN 9 2024', 102, '5468521', (SELECT product_id FROM products WHERE product_name = 'Cabernet'));
