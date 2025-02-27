@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 
+
 import dotenv
 from dotenv import dotenv_values
 
@@ -19,7 +20,7 @@ try:
     cursor = db.cursor()
 
     # owners table
-    cursor.execute("SELECT owner_id, owner_name, role_id FROM owners;SELECT owner_id, owner_name, role_id FROM owners")
+    cursor.execute("SELECT owner_id, owner_name, role_id FROM owners;")
     owners  = cursor.fetchall()
     print("--  DISPLAYING Owners TABLE --")
     for owner in owners:
@@ -46,6 +47,28 @@ try:
     for supplier in suppliers:
         print(f"SUPPLIER ID: {supplier[0]}\nSUPPLIER NAME: {supplier[1]}\nSUPPLIER PRODUCTS1: {supplier[2]}\nSUPPLIER PRODUCTS2: {supplier[3]}")
 
+
+   # --supplier number three table 
+    query = """
+     SELECT supplier_3.supplier_id, supplier_3.product_id, supplier_3.product_name, orders.quantity_ordered, orders.date_ordered, orders.date_arrived
+     FROM supplier_3 
+     INNER JOIN orders ON supplier_3.product_id = orders.product_id
+     """
+
+     # supplier number two table 
+    query = """
+    SELECT supplier_2.supplier_id, supplier_2.product_id, supplier_2.product_name, orders.quantity_ordered, orders.date_ordered, orders.date_arrived
+    FROM supplier_2
+    INNER JOIN orders ON supplier_2.product_id = orders.product_id
+    """
+   #     supplier number one table
+    query = """
+    SELECT supplier_1.supplier_id, supplier_1.product_id, supplier_1.product_name, orders.quantity_ordered, orders.date_ordered, orders.date_arrived
+    FROM supplier_1
+    INNER JOIN orders ON supplier_1.product_id = orders.product_id
+    """
+
+
     # products table 
     cursor.execute("SELECT product_id, product_name, inventory FROM products")
     products = cursor.fetchall()
@@ -54,7 +77,7 @@ try:
         print(f"PRODUCT ID: {product[0]}\nPRODUCT NAME: {product[1]}\nINVENTORY: {product[2]}")
 
     # orders table
-    cursor.execute("SELECT order_id, product_id, tracking_id, order_date, order_quantity FROM orders")
+    cursor.execute("SELECT order_id, product_id, tracking_id, order_date, quantity_ordered FROM orders")
     ordersData  = cursor.fetchall()
     print("--  DISPLAYING orders TABLE --")
     for order in ordersData:
